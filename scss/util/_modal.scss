@@ -14,7 +14,7 @@
   min-height: 250px;
   position: absolute;
   top: 20%;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.2);
   border: 1px solid #ddd;
   border-radius: 8px;
 }
@@ -32,8 +32,6 @@
 }
 
 .modal p {
-  font-size: 20px;
-  //   color: #777;
   margin: 0.4rem 0 0.2rem;
 }
 
@@ -62,8 +60,9 @@ button {
 .btn-close {
   transform: translate(10px, -20px);
   padding: 0.5rem 0.7rem;
-  background: #eee;
+  background: #000;
   border-radius: 50%;
+  color: #fff;
   position: absolute;
   top: 21px;
   right: 10px;
