@@ -1,102 +1,4 @@
 $(document).ready(function () {
-  // GET STARTED BUTTON STARTS
-  $("#get-started").click(function () {
-    $(".step-0").addClass("valid");
-    //$(".btn-next").prop("disabled", false);
-    // Fade out the "nav-logo" first
-    $(".nav-logo").fadeOut(400, function () {
-      $(".nav-logo").css({
-        margin: "0",
-        "text-align": "right",
-      });
-      $(".previous-button, .nav-logo").fadeIn(400);
-    });
-
-    $(".container.get-started").fadeOut(400, function () {
-      $(".get-name").fadeIn(400);
-    });
-
-    $(".next-button-container").fadeIn(400);
-  });
-
-  $(".btn-schedule").click(function () {
-    $("#grizzlyForm").fadeOut(400, function () {
-      $(".get-schedule").fadeIn(400);
-    });
-  });
-  // GET STARTED BUTTON ENDS
-
-  // FILE UPLOAD STARTS
-  let fileUploadValid = false;
-  let isGetScaleEmpty = false;
-  $("#fileUpload").on("change", function () {
-    const $fileList = $("#file-list");
-    const fileUploadErr = $("#fileUploadLabel");
-    fileUploadErr.css("color", "#fff");
-    fileUploadValid = false;
-    $fileList.empty(); // Clear the file list
-
-    const $input = $(this);
-
-    if (this.files.length === 0) {
-      fileUploadErr.text("No files selected.");
-      return;
-    }
-
-    const maxSize = 2 * 1024 * 1024; // 2MB
-
-    const $ul = $("<ul>");
-    let isAllValid = true;
-
-    $.each(this.files, function (i, file) {
-      // Check the file size of each selected file
-      if (file.size > maxSize) {
-        fileUploadErr.text(
-          `Invalid file size for ${file.name}. Please select a file less than or equal to 2MB.`
-        );
-        fileUploadErr.css("color", "#b21b20");
-        isAllValid = false;
-        return false; // Exit the loop if a file is invalid
-      }
-
-      // Getting the file extension (e.g., .jpg, .png, etc.)
-      const extension = file.name.substr(file.name.lastIndexOf("."));
-
-      // Define allowed file types
-      const allowedExtensionsRegx = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-
-      // Testing extension with regular expression
-      const isAllowed = allowedExtensionsRegx.test(extension);
-
-      if (!isAllowed) {
-        fileUploadErr.text(`Invalid File Type for ${file.name}.`);
-        fileUploadErr.css("color", "#b21b20");
-        isAllValid = false;
-        return false;
-      } else {
-        if (isAllValid) {
-          fileUploadErr.text(`${file.name}`);
-          fileUploadErr.css("color", "#fff");
-          isAnyInputEmpty = true;
-          fileUploadValid = true;
-        }
-      }
-    });
-  });
-
-  // FILE UPLOAD ENDS
-
-  let isgetScalesChecked = false;
-  let isgetBrandChecked = false;
-
-  $('input[name="getScale"]').on("change", function () {
-    isgetScalesChecked = true;
-  });
-
-  $('input[name="getBrand"]').on("change", function () {
-    isgetBrandChecked = true;
-  });
-
   // BUTTON NEXT STARTS
 
   $(".btn-next").on("click", function () {
@@ -122,19 +24,29 @@ $(document).ready(function () {
     const inputElements = currentSection.find(".get-input");
     const $fieldError = currentSection.find(".input-field-error");
 
-    // MESSAGES
-    if (firstName !== "") {
-      welcomeMessage.text(
-        `YESSIR! Great to have you here, ${firstName}. What email can we reach you on?`
-      );
-      getEcsMessage.text(
-        `${firstName}, be honest… what do you think is (or will be) the #1 biggest obstacle holding you back from acceptance into your Dream University above?`
-      );
-      getNumMessage.text(` Almost there, , just 4 more questions.`);
-      getPaymentMessage.text(
-        ` Alright, ${firstName} this is it - you’re at the last question.`
-      );
+    if (currentStepNum > 0) {
+      $(".nav-logo").fadeOut(400, function () {
+        $(".nav-logo").css({
+          margin: "0",
+          "text-align": "right",
+        });
+        $(".previous-button, .nav-logo").fadeIn(400);
+      });
     }
+
+    // MESSAGES
+    // if (firstName !== "") {
+    //   welcomeMessage.text(
+    //     `YESSIR! Great to have you here, ${firstName}. What email can we reach you on?`
+    //   );
+    //   getEcsMessage.text(
+    //     `${firstName}, be honest… what do you think is (or will be) the #1 biggest obstacle holding you back from acceptance into your Dream University above?`
+    //   );
+    //   getNumMessage.text(` Almost there, , just 4 more questions.`);
+    //   getPaymentMessage.text(
+    //     ` Alright, ${firstName} this is it - you’re at the last question.`
+    //   );
+    // }
 
     if (userEmail !== "") {
       $("#yEmail").val(userEmail);
@@ -152,8 +64,6 @@ $(document).ready(function () {
         isAnyInputEmpty = true;
         console.error(errorMessage);
       };
-
-      //console.log(getScales);
       switch (inputType) {
         case "text":
           if (inputID === "birthDate") {
@@ -307,7 +217,7 @@ $(document).ready(function () {
     var prevStep = $(".step.step-" + prevStepNum);
     var progressBar = $("#checkout-progress");
     var newStep = $(".step.step-" + newStepNum);
-
+    console.log(currentStepNum);
     $(".btn-next").removeClass("disabled");
     $("#section" + currentStepNum).toggle();
     $("#section" + prevStepNum).toggle();
@@ -337,11 +247,7 @@ $(document).ready(function () {
         $(".nav-logo").fadeIn(400);
       });
 
-      $(".next-button-container").fadeOut(400);
-
-      $(".container.get-started").fadeIn(300, function () {
-        $(".get-name").fadeOut(300);
-      });
+      $(".section1").fadeIn(400);
 
       prevStep.addClass("active").removeClass("valid");
       return false;
@@ -380,102 +286,6 @@ $(document).ready(function () {
       e.preventDefault();
     }
   });
-  $("#grizzlyForm").submit(function (event) {
-    // Prevent the form from submitting by default
-    event.preventDefault();
-
-    const yEmail = $("#yEmail").val();
-    const yFirstName = $("#yFirstName").val();
-    const yLastName = $("#yLastName").val();
-    const yPhoneNumber = $("#yPhoneNumber").val(); // Corrected the selector
-
-    if (
-      yEmail === "" ||
-      yFirstName === "" ||
-      yLastName === "" ||
-      yPhoneNumber === ""
-    ) {
-    } else {
-      const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      const phoneNumberPattern = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
-
-      if (!emailPattern.test(yEmail)) {
-        //alert("Please enter a valid email.");
-      } else if (yFirstName.length <= 1) {
-        //alert("Please enter a valid full name.");
-      } else if (yLastName.length <= 1) {
-        //alert("Please enter a valid parent's full name.");
-      } else if (!phoneNumberPattern.test(yPhoneNumber)) {
-        //alert("Please enter valid phone number.");
-      } else {
-        //==============POST METHOD HERE==================
-        /*(function getSelectedRadioValue(radioNodeList) {
-          for (const radio of radioNodeList) {
-            if (radio.checked) {
-              return radio.value;
-            }
-          }
-          return null; // Return null if no radio button is selected
-        }
-
-        const formData = new FormData();
-        formData.append("firstName", $("#firstName").val());
-        formData.append("email", $("#eMail").val());
-        formData.append("birthDate", $("#birthDate").val());
-        formData.append("gradYear", $("#gradYear").val());
-        formData.append("dreamUni", $("#dreamUni").val());
-        formData.append("ec1", $("#questionEc1").val());
-        formData.append("ec2", $("#questionEc2").val());
-        formData.append("ec3", $("#questionEc3").val());
-        formData.append("yourOpinion", $("#yourOpinion").val());
-        formData.append("academyQuestion", $("#academyQuestion").val());
-        formData.append("yFirstName", $("#yFirstName").val());
-        formData.append("yLastName", $("#yLastName").val());
-        formData.append("yEmail", $("#yEmail").val());
-        formData.append("yPhoneNumber", $("#yPhoneNumber").val());
-
-        // Append radio button values to the form data
-        formData.append(
-          "getScale",
-          getSelectedRadioValue($("[name='getScale']"))
-        );
-        formData.append(
-          "getInterview",
-          getSelectedRadioValue($("[name='getInterview']"))
-        );
-        formData.append(
-          "getBrand",
-          getSelectedRadioValue($("[name='getBrand']"))
-        );
-        formData.append(
-          "getPayment",
-          getSelectedRadioValue($("[name='getPayment']"))
-        );
-
-        // Append file if it's selected
-        formData.append("fileUpload", $("#fileUpload")[0].files[0]);
-
-        // Make the AJAX POST request
-        $.ajax({
-          type: "POST",
-          url: "your-server-endpoint-url",
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function (response) {
-            // Request was successful
-            console.log(response);
-          },
-          error: function (xhr, status, error) {
-            // Request failed
-            console.error(status + ": " + error);
-          },
-        });*/
-      }
-    }
-  });
-
-  // BUTTON GRIZZLY FORM ENDS
 
   // BUTTON GRIZZLY PARENT FORM STARTS
 
@@ -592,12 +402,8 @@ $(document).ready(function () {
         //window.location.href = "/landing.html";
       }
     } else {
-      // Stop the timer when count exceeds 100
-      //console.log("done");
       clearInterval(timerInterval);
       //window.location.href = "/landing.html";
     }
   }
-
-  // TIMER PERCENTAGE ENDS
 });
