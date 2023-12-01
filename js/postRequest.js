@@ -28,7 +28,6 @@ $("#btnSubmit").click(function (e) {
     } else if (!phoneNumberPattern.test(parentPhoneNumber)) {
     } else {
       //==============POST METHOD HERE==================
-      console.log("submit");
       const formData = new FormData();
       formData.append("customerFirstName", customerFirstName);
       formData.append("customerLastName", customerLastName);
