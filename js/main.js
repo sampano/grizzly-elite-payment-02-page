@@ -11,12 +11,6 @@ $(document).ready(function () {
     var nextSection = $("#section" + nextStepNum);
     var prevStepNum = currentStepNum - 1;
     var prevStep = $(".step.step-" + prevStepNum);
-    const firstNameElement = $("#firstName");
-    const firstName = firstNameElement.val();
-    const welcomeMessage = $("#welcomeMessage");
-    const getEcsMessage = $("#getEcsMessage");
-    const getNumMessage = $("#getNumMessage");
-    const getPaymentMessage = $("#getPayment");
     const userEmailElement = $("#eMail");
     const userEmail = userEmailElement.val();
     let isAnyInputEmpty = false; // Variable to track if any input is empty
@@ -33,20 +27,6 @@ $(document).ready(function () {
         $(".previous-button, .nav-logo").fadeIn(400);
       });
     }
-
-    // MESSAGES
-    // if (firstName !== "") {
-    //   welcomeMessage.text(
-    //     `YESSIR! Great to have you here, ${firstName}. What email can we reach you on?`
-    //   );
-    //   getEcsMessage.text(
-    //     `${firstName}, be honest… what do you think is (or will be) the #1 biggest obstacle holding you back from acceptance into your Dream University above?`
-    //   );
-    //   getNumMessage.text(` Almost there, , just 4 more questions.`);
-    //   getPaymentMessage.text(
-    //     ` Alright, ${firstName} this is it - you’re at the last question.`
-    //   );
-    // }
 
     if (userEmail !== "") {
       $("#yEmail").val(userEmail);
@@ -286,68 +266,6 @@ $(document).ready(function () {
       e.preventDefault();
     }
   });
-
-  // BUTTON GRIZZLY PARENT FORM STARTS
-
-  $("#grizzlyParentForm").submit(function (event) {
-    event.preventDefault();
-
-    const yParentFirstName = $("#yParentFirstName").val();
-    const yParentLastName = $("#yParentLastName").val();
-    const yParentPhoneNumber = $("#yParentPhoneNumber").val();
-    const yParentEmail = $("#yParentEmail").val();
-
-    if (
-      yParentFirstName === "" ||
-      yParentLastName === "" ||
-      yParentPhoneNumber === "" ||
-      yParentEmail === ""
-    ) {
-    } else {
-      const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      const phoneNumberPattern = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
-
-      if (!emailPattern.test(yParentEmail)) {
-        //alert("Please enter a valid email.");
-      } else if (yParentFirstName.length <= 1) {
-        //alert("Please enter a valid full name.");
-      } else if (yParentLastName.length <= 1) {
-        //alert("Please enter a valid parent's full name.");
-      } else if (!phoneNumberPattern.test(yParentPhoneNumber)) {
-        //alert("Please enter valid phone number.");
-      } else {
-        $(".get-details").fadeOut(400);
-        $(".btn-submit").fadeOut(400);
-        $(".get-verification").fadeIn(800);
-        $(".nav-logo").fadeOut(400, function () {
-          $(".nav-logo").fadeIn(400);
-          $(".previous-button").css("display", "none");
-          $(".timer").css("display", "none");
-          $(".nav").css("justify-content", "center");
-          $("#checkout-progress").css("display", "none");
-          $(".nav-logo").css({
-            margin: "0 auto",
-            "text-align": "center",
-          });
-        });
-        // Start the countdown timer when the form is submitted
-        let timerInterval;
-
-        // Start the countdown timer when the form is submitted
-        let count = 1;
-        timerInterval = setInterval(() => {
-          countdown(count);
-          count++;
-
-          if (count > 100) {
-            // Stop the timer when count exceeds 100
-            clearInterval(timerInterval);
-          }
-        }, 20);
-      }
-    }
-  });
-  // BUTTON GRIZZLY PARENT FORM ENDS
 
   // TIMER PERCENTAGE STARTS
 
